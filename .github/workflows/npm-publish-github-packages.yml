@@ -22,8 +22,8 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      working-directory: ./introduce
+      working-directory: ./FoodOrderApp
 
     - name: Build project
       run: npm run build
-      working-directory: ./introduce
+      working-directory: ./FoodOrderApp
