@@ -27,7 +27,7 @@ function cartReducer(state, action) {
       };
       updatedItems[existingCartItemIndex] = updatedItem;
     } else {
-      // 商品不存在 → 添加新商品，数量为 1
+      // 商品不存在 → 添加新商品，数量为 1。quantity是value name，1是value
       updatedItems.push({ ...action.item, quantity: 1 });
     }
 
