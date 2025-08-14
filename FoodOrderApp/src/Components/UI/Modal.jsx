@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-export default function Modal({ children, open, className = "" }) {
+export default function Modal({ children, open, onClose, className = "" }) {
   const dialog = useRef();
   useEffect(() => {
     const modal = dialog.current;
@@ -17,11 +17,11 @@ export default function Modal({ children, open, className = "" }) {
   // useEffect运行：
   // 当 open 从 true → false，或者 false → true 时，React 会先运行上一次 effect 的 cleanup，再运行新的 effect。
   // 第一次 open = true → 运行 modal.showModal()（不会立刻调用 modal.close()）
-  // 当 open 变成 false → cleanup 运行 → modal.close()
+  // 当dependency再次改变时，也就是当 open 变成 false → cleanup function运行 → modal.close()
   // 如果再次 open = true → 又会调用 modal.showModal()
 
   return createPortal(
-    <dialog ref={dialog} className={`modal ${className}`}>
+    <dialog ref={dialog} className={`modal ${className}`} onClose={onClose}>
       {children}
     </dialog>,
     document.getElementById("modal")
