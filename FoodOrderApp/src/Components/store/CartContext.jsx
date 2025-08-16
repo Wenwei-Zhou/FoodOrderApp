@@ -87,7 +87,7 @@ export function CartContextProvider({ children }) {
     removeItem,
   };
 
-  console.log(cartContext);
+  // console.log(cartContext);
 
   return (
     <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>
@@ -184,3 +184,14 @@ export default CartContext;
 //    │ UI 重新渲染，使用        │
 //    │ cart.items 展示购物车   │
 //    └─────────────────────────┘
+
+
+// Meal component用map()展示每个商品的Component，MealItem({meal}) component是在Meal的map()里面执行的。
+// 购物车items一开始（初始化）是空的MealItem，在MealItem component里有一个执行addItem()的button。
+// 执行addItem()会触发dispatchCartAction({ type: "ADD_ITEM", item: meal })，
+// 这会调用cartReducer(state, action)，根据action.type来判断是添加还是删除商品。
+// 如果添加商品：
+// state.items.findIndex((item) => item.id === action.item.id);意思是在state.items数组中查找是否有与action.item.id相同的商品id。
+// 如果找到，说明商品已存在，更新数量existingItem.quantity + 1。如果没有找到，说明是新商品，用push()添加到updatedItems数组中，设置数量为1（quantity: 1）。
+
+// 删除商品也是同样的逻辑！
