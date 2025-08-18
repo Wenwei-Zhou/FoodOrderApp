@@ -20,13 +20,20 @@ export default function useHttp(url, config, initidalData) {
   const [data, setData] = useState(initidalData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+  const [success, setSuccess] = useState(false);
+
+  function clearData() {
+    setData(initidalData);
+    setSuccess(false);
+  }
 
   const sendRequest = useCallback(
-    async function sendRequest() {
+    async function sendRequest(requestBody) {
       setIsLoading(true);
       try {
-        const resData = await sendHttpRequest(url, config);
+        const resData = await sendHttpRequest(url, {...config, body: requestBody});
         setData(resData);
+        setSuccess(true);
       } catch (error) {
         setError(error.message || "Something went wrong!");
       }
@@ -35,6 +42,8 @@ export default function useHttp(url, config, initidalData) {
     [url, config]
     // sendRequest 需要知道要请求的 url 和请求配置 config。
     // 所以 当 url 或 config 改变时，React 会重新生成一个新的 sendRequest。
+    // setData(resData); 把data设置为请求到的数据。
+    // setSuccess(true); 把success设置为true，表示请求成功。
   );
 
   useEffect(() => {
@@ -47,10 +56,12 @@ export default function useHttp(url, config, initidalData) {
   // config 也需要作为依赖项，因为如果 config 改变了（比如 method 从 GET 改成 POST），我们需要重新发送请求。
 
   return {
+    success,
     data,
     isLoading,
     error,
     sendRequest,
+    clearData,
   };
 }
 
