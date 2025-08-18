@@ -88,6 +88,7 @@ export function CartContextProvider({ children }) {
   }
 
   // cartReducer：一个函数，接受 (state, action)，返回新的 state。
+  // state：当前状态。
   // { items: [] }: initialState初始状态。
   // cart：当前状态。
   // dispatchCartAction：用来发送 action，触发状态更新。
