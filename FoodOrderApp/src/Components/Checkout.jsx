@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useActionState } from "react";
 import CartContext from "./store/CartContext";
 import Modal from "./UI/Modal.jsx";
 import { currencyFormatter } from "../util/formatting";
@@ -41,10 +41,13 @@ export default function Checkout() {
   function handleFinish() {
     userProgressCtx.hideCheckout();
     cartCtx.clearCart();
-    clearData();
+    setTimeout(() => {
+        clearData();
+    }, 3000);
+    
   }
 
-  async function handleAction(fd) {
+  async function handleAction(prevstate, fd) {
     const customerData = Object.fromEntries(fd.entries());
 
     await sendRequest(
@@ -95,6 +98,10 @@ export default function Checkout() {
 //     // });
 //   }
 
+const [formState, formAction, pending] = useActionState(handleAction, null);
+// const [state, formAction, isPending] = useActionState(actionFunction, initialState);
+// state: 当前状态，formAction: 提交表单的函数(<form action={formAction}>)，isPending: 是否正在处理提交。
+
   let actions = (
     <>
       <Button type="button" textOnly onClick={handleClose}>
@@ -104,7 +111,7 @@ export default function Checkout() {
     </>
   );
 
-  if (isSending) {
+  if (pending) {
     return (actions = <span>Sending order data...</span>);
   }
 
@@ -132,9 +139,6 @@ export default function Checkout() {
       <Modal open={true} onClose={handleFinish}>
         <h2>Success!</h2>
         <p>Order submitted successfully</p>
-        <p className="modal-actions">
-          <Button onClick={handleFinish}>OK</Button>
-        </p>
       </Modal>
     );
   }
@@ -143,7 +147,7 @@ export default function Checkout() {
 
   return (
     <Modal open={userProgressCtx.progress === "checkout"} onClose={handleClose}>
-      <form action={handleAction}>
+      <form action={formAction}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(cartTotal)}</p>
         {/* <Input id=/> id是传到后端时的数据名字。example："name": "ww" */}
