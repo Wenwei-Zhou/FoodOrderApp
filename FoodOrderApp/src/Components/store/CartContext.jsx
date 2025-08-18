@@ -4,6 +4,7 @@ const CartContext = createContext({
   items: [],
   addItem: (item) => {},
   removeItem: (id) => {},
+  clearCart: () => {},
 });
 
 function cartReducer(state, action) {
@@ -62,6 +63,12 @@ function cartReducer(state, action) {
     return { ...state, item: updatedItems };
   }
 
+  if (action.type === "CLEAR-CART") {
+    return {...state, items: []};
+    // 复制了旧的状态
+    // items: [] → 将items设为[]，意思是清空购物车
+  }
+
   return state;
 }
 
@@ -76,6 +83,10 @@ export function CartContextProvider({ children }) {
     dispatchCartAction({ type: "REMOVE_ITEM", id: id });
   }
 
+  function clearCart() {
+    dispatchCartAction({ type: "CLEAR-CART"});
+  }
+
   // cartReducer：一个函数，接受 (state, action)，返回新的 state。
   // { items: [] }: initialState初始状态。
   // cart：当前状态。
@@ -85,6 +96,7 @@ export function CartContextProvider({ children }) {
     items: cart.items,
     addItem,
     removeItem,
+    clearCart,
   };
 
   // console.log(cartContext);
