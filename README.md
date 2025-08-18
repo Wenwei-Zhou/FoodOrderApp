@@ -26,7 +26,7 @@ Backend API (Node/Express or mock API for demo)
 
 # Getting Started 🚀
 1. Clone the repository
-git clone https://github.com/your-username/food-order-app.git
+git clone https://github.com/Wenwei-Zhou/FoodOrderApp.git
 cd food-order-app
 
 3. Install dependencies
