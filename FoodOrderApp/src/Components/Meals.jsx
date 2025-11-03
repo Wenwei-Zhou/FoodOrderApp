@@ -12,9 +12,9 @@ export default function Meals() {
   } = useHttp("http://localhost:3000/meals", requestConfig, []);
 
   if (isLoading) {
-    return <p className="center">Fetching meals...</p>;
+    return <p className="center">Fetching meals..., please wait for a minute</p>;
   }
-  // 读取数据时isLoading = true，然后return <p>Fetching meals...</p>。网页显示Fetching meals...
+  // 读取数据时isLoading = true，然后return <p>Fetching meals..., please wait for a minute</p>。网页显示Fetching meals...
 
   if (error) {
     return <Error title="Failed to fetch meals" message={error} />;
